@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # Serviço MongoDB
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - app-network
+
+  # Serviço PostgreSQL
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: scrapdb
+      POSTGRES_PASSWORD: scrapdb
+      POSTGRES_DB: scrapdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  # Serviço da sua aplicação Node.js
+  nodeapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nodeapp
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      # Configure outras variáveis de ambiente conforme necessário para sua aplicação
+      # Não é necessário mais definir variáveis como CONNECTION_STRING, DB_USER, DB_PASSWORD, etc.
+      PG_CONNECTION_STRING: postgresql://scrapdb:scrapdb@postgres:5432/scrapdb
+      MONGO_URI: mongodb://mongodb:27017/mydatabase  # URI de conexão do MongoDB usando o nome do serviço
+    depends_on:
+      - mongodb
+      - postgres
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+  postgres_data:

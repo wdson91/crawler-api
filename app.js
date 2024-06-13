@@ -2,7 +2,7 @@ const express = require("express");
 
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
+const crawlerQueue = require("./src/queue/queue");
 const fs = require("fs");
 
 const app = express();
@@ -10,7 +10,7 @@ const port = 3000;
 require("dotenv").config();
 // Middleware
 
-app.use(cors());
+app.use(cors({ origin: "*" }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

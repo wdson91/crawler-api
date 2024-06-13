@@ -5,9 +5,7 @@ const dbPassword = process.env.DB_PASSWORD;
 const OrgData = require("../../models/organization");
 
 const conn = () => {
-  mongoose.connect(
-    `mongodb+srv://${dbUser}:${dbPassword}@cluster0.kafqu2p.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
-  );
+  mongoose.connect(process.env.MONGO_URI);
 
   const db = mongoose.connection;
 
