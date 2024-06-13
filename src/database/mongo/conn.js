@@ -5,7 +5,7 @@ const dbPassword = process.env.DB_PASSWORD;
 const OrgData = require("../../models/organization");
 
 const conn = () => {
-  mongoose.connect(process.env.MONGO_URI, {
+  mongoose.connect("mongodb://mongodb:27017/mydatabase", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
