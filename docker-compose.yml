@@ -40,7 +40,7 @@ services:
       # Configure outras variáveis de ambiente conforme necessário para sua aplicação
       # Não é necessário mais definir variáveis como CONNECTION_STRING, DB_USER, DB_PASSWORD, etc.
       PG_CONNECTION_STRING: postgresql://scrapdb:scrapdb@postgres:5432/scrapdb
-      MONGO_URI: mongodb://mongodb:27017/mydatabase  # URI de conexão do MongoDB usando o nome do serviço
+      MONGO_URI: mongodb://mongodb:27017/mydatabase
     depends_on:
       - mongodb
       - postgres
