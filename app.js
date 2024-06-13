@@ -22,11 +22,11 @@ if (!fs.existsSync(dbFilePath)) {
 }
 
 // Routes
-const crawlerRoutes = require("./routes/routes");
+const crawlerRoutes = require("./src/routes/routes");
 app.use(crawlerRoutes);
 
 app.listen(port, () => {
   console.log(`API is running on http://localhost:${port}`);
 });
 
-require("./database/conn");
+require("./src/database/conn");
