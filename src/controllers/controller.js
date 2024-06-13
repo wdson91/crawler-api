@@ -2,13 +2,10 @@ const fs = require("fs");
 const dbFilePath = "./db.json";
 const scraper = require("../services/crawlerService");
 const { json } = require("body-parser");
-const conn = require("../database/mongo/conn");
+const connMongo = require("../database/mongo/conn");
 const organization = require("../models/organization");
-const {
-  insertRequest,
-  getRequestById,
-  getRequests,
-} = require("../database/postgre/connect");
+const connPostgre = require("../database/postgre/connect");
+
 const { v4: uuidv4 } = require("uuid");
 
 // POST Request
@@ -25,10 +22,10 @@ async function createRequest(req, res) {
       return res.status(401).json("Organização não encontrada");
     }
     // Salvando no banco de dados MongoDB
-    const org = await conn.insertData(data);
+    const org = await connMongo.insertData(data);
     // Salvando no banco de dados Postgres
 
-    const org_log = await insertRequest(
+    const org_log = await connPostgre.insertRequest(
       newRequest.id,
       org,
       newRequest.organization
@@ -44,7 +41,7 @@ async function createRequest(req, res) {
 async function getOneRequest(req, res) {
   const id = req.params.id;
   try {
-    const org = await conn.getOneData(id);
+    const org = await connMongo.getOneData(id);
     res.status(200).json(org);
   } catch (error) {
     console.error("Erro ao buscar os dados:", error);
@@ -54,8 +51,9 @@ async function getOneRequest(req, res) {
 // GET All Requests
 async function getAllRequests(req, res) {
   try {
-    const org = await conn.getAllData();
-    res.status(200).json(org);
+    const requests = await connPostgre.getRequests();
+
+    res.status(200).json(requests);
   } catch (error) {
     console.error("Erro ao buscar os dados:", error);
   }
