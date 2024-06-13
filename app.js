@@ -13,13 +13,6 @@ require("dotenv").config();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-// Simulate a database with JSON file
-const dbFilePath = "./db.json";
-
-// Initialize the JSON file
-if (!fs.existsSync(dbFilePath)) {
-  fs.writeFileSync(dbFilePath, JSON.stringify([]));
-}
 
 // Routes
 const crawlerRoutes = require("./src/routes/routes");
@@ -29,4 +22,5 @@ app.listen(port, () => {
   console.log(`API is running on http://localhost:${port}`);
 });
 
-require("./src/database/conn");
+require("./src/database/mongo/conn");
+require("./src/database/postgre/connect");
