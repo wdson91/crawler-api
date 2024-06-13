@@ -3,7 +3,7 @@ const pool = new Pool({
   connectionString: process.env.PG_CONNECTION_STRING,
   ssl: false, // Desabilitar SSL
 });
-async function connectPostgre() {
+async function connect() {
   if (global.connection) return global.connection.connect();
 
   try {
@@ -33,7 +33,7 @@ async function createTable() {
   try {
     const client = await pool.connect();
     await client.query(createTableQuery);
-    console.log("Connected to Postgres database successfully");
+    console.log("Conectado ao banco de dados Postgres!");
     client.release();
   } catch (err) {
     console.error("Error creating table:", err);
@@ -52,12 +52,7 @@ async function insertRequest(id, idMongo, organization) {
     `;
   try {
     const client = await pool.connect();
-    const cleanedIdMongo = String(idMongo).replace(/^"(.*)"$/, "$1");
-    const res = await client.query(insertQuery, [
-      id,
-      cleanedIdMongo,
-      organization,
-    ]);
+    const res = await client.query(insertQuery, [id, idMongo, organization]);
 
     client.release();
   } catch (err) {
@@ -75,8 +70,6 @@ async function getRequests() {
     const res = await client.query(selectQuery);
 
     client.release();
-
-    return res.rows;
   } catch (err) {
     console.error("Error querying requests:", err);
     if (Error.captureStackTrace) {
@@ -106,11 +99,10 @@ async function getRequestById(idMongo) {
     }
   }
 }
-
 createTable();
 
 module.exports = {
-  connectPostgre,
+  connect,
   insertRequest,
   getRequests,
   getRequestById,

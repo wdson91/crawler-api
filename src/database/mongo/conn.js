@@ -13,11 +13,11 @@ const conn = () => {
   const db = mongoose.connection;
 
   db.on("error", () => {
-    console.log("Error connecting to MongoDB!");
+    console.log("Erro ao conectar ao banco de dados");
   });
 
   db.on("open", () => {
-    console.log("Connected to MongoDB!");
+    console.log("Conectado ao banco de dados MongoDB");
   });
 };
 
@@ -37,7 +37,7 @@ async function getAllData() {
 
     return data;
   } catch (error) {
-    console.error("Error", error);
+    console.error("Erro ao buscar os dados:", error);
   }
 }
 
@@ -47,7 +47,7 @@ async function getOneData(id) {
 
     return data.data;
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Erro ao buscar os dados:", error);
   }
 }
 
